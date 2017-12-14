@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+	  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+	  
+	  <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css">
+	  
+	  <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+	  <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
+	  <title>cherrypy example</title>
+	  
+	</head>
+<body>
+	<div class="container-fluid" id="main" >
+		<div class="row">
+		 	<header id="nav">
+			</header>
+		</div>
+		
+		<div class="row"  style="padding-top:10%;">
+			<div class="sidenav"  >
+
+				  <a href="#about">About</a>
+				  <a href="#services">Services</a>
+				  <a href="#clients">Clients</a>
+				  <a href="#contact">Contact</a>
+		
+			</div>
+			<div class="col-md-10 " class="main">
+				<div class="row">
+					<div class="col-md-5 col-md-offset-5">
+						<div class="panel panel-default" contentEditable="true"  id="editable">
+						  <div class="panel-body">Take a note...</div>
+						</div>
+						<div id="edit">
+							<div class="panel panel-default" >
+								  <div class="panel-heading" contentEditable="true">Title</div>
+								  <div class="panel-body" contentEditable="true">Take a note...</div>
+								  <div class="panel-footer">
+								  <button type="button" class="btn btn-warning btn-md t">Done</button></div>
+							</div>
+						</div>		
+					</div>
+				</div>
+				<div class="row">	
+					<div class="panel-group">
+
+					    <div class="panel panel-default col-md-2 col-md-offset-2">
+					      <div class="panel-heading">Panel Header</div>
+					      <div class="panel-body">Panel Content</div>
+					    </div>
+					    <div class="panel panel-default col-md-2 col-md-offset-1">
+					      <div class="panel-heading">Panel Header</div>
+					      <div class="panel-body">Panel Content</div>
+					    </div>
+					    <div class="panel panel-default col-md-2 col-md-offset-1">
+					      <div class="panel-heading">Panel Header</div>
+					      <div class="panel-body">Panel Content</div>
+					    </div>
+					  </div>
+				</div>
+				
+			</div>
+		</div>
+		
+		<div class="modal fade" id="myModal" role="dialog">
+		    <div class="modal-dialog modal-sm">
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <h4 class="modal-title">Modal Header</h4>
+		        </div>
+		        <div class="modal-body">
+		          <p>This is a small modal.</p>
+		        </div>
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        </div>
+		      </div>
+		    </div>
+		 </div>
+
+	</div>
+
+</body>
+<script type="text/javascript">
+	$("#edit").hide();
+
+	
+	$('#editable').on('click', function(e) {
+	    e.stopPropagation();
+	    if ($(this).attr("contentEditable") == "true") {
+	            $("#edit").show();
+	            $("#editable").hide();
+	        } 
+	});
+
+	$('#edit').on('click', function(e) {
+	    e.stopPropagation();
+	});
+
+	$(document).on('click', function (e) {
+	 	$("#edit").hide();
+		$("#editable").show();
+	});
+</script>
+</html>
