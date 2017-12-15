@@ -7,6 +7,7 @@
 	  <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css">
 	  
 	  <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+	  <script type="text/javascript" src="/static/js/notes.js"></script>
 	  <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
 	  <title>cherrypy example</title>
 	  
@@ -34,11 +35,11 @@
 						  <div class="panel-body">Take a note...</div>
 						</div>
 						<div id="edit">
-							<div class="panel panel-default" >
-								  <div class="panel-heading" contentEditable="true">Title</div>
-								  <div class="panel-body" contentEditable="true">Take a note...</div>
+							<div class="panel panel-default" >								
+					              <div class="panel-heading" id="note_title" contentEditable="true">Title</div>
+								  <div class="panel-body" id="note_content" contentEditable="true">Take a note...</div>
 								  <div class="panel-footer">
-								  <button type="button" class="btn btn-warning btn-md t">Done</button></div>
+								  <button type="button" id="submit" class="btn btn-warning btn-md " onclick="notesServices.addNotes()">Done</button></div>					           
 							</div>
 						</div>		
 					</div>
