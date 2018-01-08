@@ -33,17 +33,22 @@
 			</div>
 			<div class="col-md-10 col-md-offset-2" class="main">
 				<div class="row">
-					<div class="col-md-5 col-md-offset-2">
-						<div class="panel panel-default" contentEditable="true"  id="editable">
-						  <div class="panel-body">Take a note...</div>
+					<div class="col-md-7 col-md-offset-2">
+						<div id="editable" class="editable_card"  >
+						  Take a note...
 						</div>
-						<div id="edit">
-							<div class="panel panel-default" >								
-					              <div class="panel-heading" id="note_title" contentEditable="true">Title</div>
-								  <div class="panel-body" id="note_content" contentEditable="true">Take a note...</div>
+						<div id="edit" class="editable_card">
+							
+								<div id="note_title" contenteditable="true" placeholder="Title"></div>
+								<div id="note_content" contenteditable="true" placeholder="Take a note..."></div>
+								<button type="button" id="submit" class="btn btn-default pull-right" onclick="notesServices.addNotes()">Done</button>
+								
+							<!-- <div class="panel panel-default" >								
+					              <div class="panel-heading" id="note_title" contentEditable="true" placeholder="Title"></div>
+								  <div class="panel-body" id="note_content" contentEditable="true" placeholder="Title"></div>
 								  <div class="panel-footer">
-								  <button type="button" id="submit" class="btn btn-warning btn-md " onclick="notesServices.addNotes()">Done</button></div>					           
-							</div>
+								  <button type="button" id="submit" class="btn btn-warning btn-md " onclick="notesServices.addNotes()">Done</button></div>								  				           
+							</div> -->
 						</div>		
 					</div>
 				</div>
@@ -113,14 +118,21 @@
 
 	$("#edit").hide();
 
-	
 	$('#editable').on('click', function(e) {
-	    e.stopPropagation();
-	    if ($(this).attr("contentEditable") == "true") {
-	            $("#edit").show();
-	            $("#editable").hide();
-	        } 
+		e.stopPropagation();
+		$("#note_title").html("")
+		$("#note_content").html("")
+        $("#edit").show();
+        $("#editable").hide();
+	         
 	});
+	// $('#editable').on('click', function(e) {
+	//     e.stopPropagation();
+	//     if ($(this).attr("contentEditable") == "true") {
+	//             $("#edit").show();
+	//             $("#editable").hide();
+	//         } 
+	// });
 
 	$('#edit').on('click', function(e) {
 	    e.stopPropagation();

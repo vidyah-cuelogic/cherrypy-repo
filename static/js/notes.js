@@ -2,6 +2,12 @@ var notesServices = (function($) {
 
 	var addNotes = function(){
 
+		if (!$("#note_title").text() && !$("#note_content").text())
+		{
+			$("#edit").hide();
+            $("#editable").show();
+			return
+		}
 		var postdata = {
 			title: $("#note_title").text() ,
 			note: $("#note_content").text()

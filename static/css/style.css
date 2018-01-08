@@ -5,13 +5,9 @@ html {
 
 body {
     font-family: "Lato", sans-serif;
+    background-color: #e8e8e8 !important;
 }
 
-.main {
-    margin-left: 160px; /* Same as the width of the sidenav */
-    font-size: 28px; /* Increased text to enable scrolling */
-    padding: 0px 10px;
-}
  
  /* header css */
 header{
@@ -70,6 +66,7 @@ header{
     margin-top : 50px;
     float: left;
     padding: 10px;
+    background-color: white;
 
 }
 
@@ -101,4 +98,43 @@ input.error , textarea.error{
 }
 #modal_title{
     font-size: 22px;
+}
+
+
+[contenteditable=true]:empty:before{
+  content: attr(placeholder);
+   /* For Firefox */
+
+
+}
+
+#note_title{
+    font-size: 20px;
+}
+
+div[contenteditable=true] {
+  padding: 5px;
+  outline: 0px solid transparent;
+}
+
+pre {
+  background:#EEE;
+  padding:5px;
+  width: 290px;
+}
+
+.editable_card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    padding: 10px;
+    background-color: white;
+    overflow:hidden;
+    margin:0;
+}
+#editable{
+    display: block;
+    width: 80%;
+}
+#note_content,#note_title{
+    margin: 10px;
 }
