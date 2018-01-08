@@ -15,7 +15,9 @@ class Notes(Base):
     __tablename__ = 'notes'
 
     id = Column(Integer, primary_key=True)
+    title = Column(String(32))
     note = Column(String(32))
+
 
 class Root(object):
 
@@ -23,35 +25,32 @@ class Root(object):
     def db(self):
         return cherrypy.request.db
 
-    # @cherrypy.expose()
-    # @cherrypy.tools.json_in()
-    # @cherrypy.tools.json_out()
-    # def UsernameExists(self):
-    #     import pdb; pdb.set_trace();
-    #     json_obj = cherrypy.request.json
-    #     usernames = ['bruce', 'lee', 'jackie', 'chan']
-    #     return {"exists": json_obj['username'] in usernames}
-
     @cherrypy.expose
-    def submit(self, note):
-        self.db.add(Notes(note=note))
-        self.db.commit()
-        for msg in self.db.query(Notes).all():
-            print msg.note
-            print "=================="
-        cherrypy.response.headers['Content-Type'] = 'application/json'
-        return json.dumps(dict(title="Hello, %s" % note))
-
-    @cherrypy.expose
-    def index(self, note=None):
-        if note: 
-            self.db.add(Notes(note=note))
-            self.db.commit()
-            raise cherrypy.HTTPRedirect('/')
-
+    def index(self):
+        all_notes = self.db.query(Notes).all()
         tmpl = env.get_template('index.html')
-        return tmpl.render()
+        return tmpl.render(notes=all_notes)
 
+    @cherrypy.expose
+    def submit(self,title,note):
+        self.db.add(Notes(title=title,note=note))
+        self.db.commit()
+        cherrypy.response.headers['Content-Type'] = 'application/json'
+        return json.dumps(dict(title="%s " % title , note="%s " % note))
+
+    @cherrypy.expose
+    def update_data(self,note_id,title,note):
+        self.db.query(Notes).filter(Notes.id == note_id).update({Notes.title: title ,Notes.note:note});
+        self.db.commit();
+        cherrypy.response.headers['Content-Type'] = 'application/json'
+        return json.dumps(dict(title="%s " % title , note="%s " % note))
+
+    @cherrypy.expose
+    def delete_data(self,note_id):
+        self.db.query(Notes).filter(Notes.id == note_id).delete();
+        self.db.commit();
+        cherrypy.response.headers['Content-Type'] = 'application/json'
+        return json.dumps({'status':200})
 
 
 def run():
@@ -59,11 +58,13 @@ def run():
 
     global_conf = {
         'global': {
-            'server.socket_host': '0.0.0.0',
+            'server.socket_host': '127.0.0.1',
             'server.socket_port': int(os.environ.get('PORT', 5000)),
         },
         'databases':{
-            'driver': "sqlite"
+            'driver': "postgres",
+            'host': "localhost",
+            'port': 5432,
         }
     }
     cherrypy.config.update(global_conf)
@@ -80,14 +81,13 @@ def run():
         
     }
     cherrypy.tree.mount(Root(), '/', config=app_config)
-    dbfile = os.path.join(HERE, 'db3.db')
+    # dbfile = os.path.join(HERE, 'database1.db')
 
-    if not os.path.exists(dbfile):
-        open(dbfile, 'w+').close()
+    # if not os.path.exists(dbfile):
+    #     open(dbfile, 'w+').close()
 
     sqlalchemy_plugin = SQLAlchemyPlugin(
-         cherrypy.engine, Base, 'sqlite:///%s' % (dbfile),
-        echo=True
+         cherrypy.engine, Base, 'postgresql+psycopg2://postgres:rootpass@0.0.0.0:5432/db1'
     )
     sqlalchemy_plugin.subscribe()
     sqlalchemy_plugin.create()
@@ -98,3 +98,6 @@ def run():
 
 if __name__ == '__main__':
     run()
+
+
+
