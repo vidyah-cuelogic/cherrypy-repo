@@ -105,7 +105,7 @@ def run():
     #     open(dbfile, 'w+').close()
 
     sqlalchemy_plugin = SQLAlchemyPlugin(
-         cherrypy.engine, Base, 'postgresql+psycopg2://postgres:rootpass@0.0.0.0:5432/db3'
+         cherrypy.engine, Base, 'postgresql+psycopg2://postgres:rootpass@0.0.0.0:5432/db1'
     )
     sqlalchemy_plugin.subscribe()
     sqlalchemy_plugin.create()
