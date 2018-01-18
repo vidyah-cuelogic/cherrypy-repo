@@ -1,11 +1,14 @@
 import cherrypy
 import os
+import json
+import datetime
+
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column
-from sqlalchemy.types import String, Integer
+from sqlalchemy import Column , asc
+from sqlalchemy.types import String, Integer ,DateTime
 from cp_sqlalchemy import SQLAlchemyTool, SQLAlchemyPlugin
 from jinja2 import Environment, FileSystemLoader
-import json
+
 Base = declarative_base()
 HERE = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=FileSystemLoader('templates'))
@@ -17,9 +20,10 @@ class Notes(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(32))
     note = Column(String(32))
+    created_date = Column(DateTime, default=datetime.datetime.utcnow)
 
 
-class Root(object):
+class Notes_Class(object):
 
     @property
     def db(self):
@@ -27,8 +31,8 @@ class Root(object):
 
     @cherrypy.expose
     def index(self):
-        all_notes = self.db.query(Notes).all()
-        tmpl = env.get_template('index.html')
+        all_notes = self.db.query(Notes).order_by(asc(Notes.created_date))
+        tmpl = env.get_template('notes.html')
         return tmpl.render(notes=all_notes)
 
     @cherrypy.expose
@@ -52,6 +56,19 @@ class Root(object):
         cherrypy.response.headers['Content-Type'] = 'application/json'
         return json.dumps({'status':200})
 
+class ListNotes_Class(object):
+
+    @property
+    def db(self):
+        return cherrypy.request.db
+
+    @cherrypy.expose
+    def index(self):
+       
+        tmpl = env.get_template('listNotes.html')
+        return tmpl.render()
+
+   
 
 def run():
     cherrypy.tools.db = SQLAlchemyTool()
@@ -80,14 +97,15 @@ def run():
         },    
         
     }
-    cherrypy.tree.mount(Root(), '/', config=app_config)
+    cherrypy.tree.mount(Notes_Class(), '/', config=app_config)
+    cherrypy.tree.mount(ListNotes_Class(), '/listNotes/', config=app_config)
     # dbfile = os.path.join(HERE, 'database1.db')
 
     # if not os.path.exists(dbfile):
     #     open(dbfile, 'w+').close()
 
     sqlalchemy_plugin = SQLAlchemyPlugin(
-         cherrypy.engine, Base, 'postgresql+psycopg2://postgres:rootpass@0.0.0.0:5432/db1'
+         cherrypy.engine, Base, 'postgresql+psycopg2://postgres:rootpass@0.0.0.0:5432/db3'
     )
     sqlalchemy_plugin.subscribe()
     sqlalchemy_plugin.create()

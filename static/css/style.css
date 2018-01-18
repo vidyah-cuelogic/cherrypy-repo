@@ -69,7 +69,12 @@ header{
     background-color: white;
 
 }
-
+#menu-toggle{
+    text-decoration: none;
+    float:left;
+    color:#fff;
+    padding-right: 15px;
+}
 .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
@@ -103,12 +108,9 @@ input.error , textarea.error{
 
 [contenteditable=true]:empty:before{
   content: attr(placeholder);
-   /* For Firefox */
-
-
 }
 
-#note_title{
+#note_title,#list_note_title{
     font-size: 20px;
 }
 
@@ -130,11 +132,33 @@ pre {
     background-color: white;
     overflow:hidden;
     margin:0;
+
 }
 #editable{
     display: block;
     width: 80%;
+    height: 40px;
+    position: relative;
 }
 #note_content,#note_title{
     margin: 10px;
+}
+.takeNoteOneLine{
+    float: left;
+    width: calc(100% - 20px);
+}
+.noteAddlistView{
+    border:1px solid #000;
+    border-left: 0;
+    border-right: 0;
+    padding: 7px 0 7px 20px;
+    position: relative;
+}
+.noteAddlistView:before{
+    content: '\f067';
+    font: normal normal normal 14px/1 FontAwesome;
+        position: absolute;
+    left: 0;
+    top: 14px;
+
 }

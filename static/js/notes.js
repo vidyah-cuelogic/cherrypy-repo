@@ -4,7 +4,7 @@ var notesServices = (function($) {
 
 		if (!$("#note_title").text() && !$("#note_content").text())
 		{
-			$("#edit").hide();
+			$("#editNote").hide();
             $("#editable").show();
 			return
 		}
@@ -14,7 +14,7 @@ var notesServices = (function($) {
 		};
         $.post('/submit', postdata, function(data) {
             // and set the title with the result
-            $("#edit").hide();
+            $("#editNote").hide();
             $("#editable").show();
             location.reload();
            });
@@ -69,6 +69,19 @@ var notesServices = (function($) {
            });
         return false;
 	}
+
+	var show_DivEditListNote = function(){
+		var postdata = {
+			note_id: $("#note_id_"+index).val() 
+		} ;
+        $.post('/delete_data', postdata, function(data) {
+            // and set the title with the result
+            location.reload();
+           });
+        return false;
+	}
+
+	
 
 	// var fetchAll_notes = function(){
 
