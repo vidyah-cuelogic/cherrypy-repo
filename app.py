@@ -1,11 +1,14 @@
 import cherrypy
 import os
+import json
+import datetime
+
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column
-from sqlalchemy.types import String, Integer
+from sqlalchemy import Column , asc
+from sqlalchemy.types import String, Integer ,DateTime
 from cp_sqlalchemy import SQLAlchemyTool, SQLAlchemyPlugin
 from jinja2 import Environment, FileSystemLoader
-import json
+
 Base = declarative_base()
 HERE = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=FileSystemLoader('templates'))
@@ -15,55 +18,70 @@ class Notes(Base):
     __tablename__ = 'notes'
 
     id = Column(Integer, primary_key=True)
+    title = Column(String(32))
     note = Column(String(32))
+    created_date = Column(DateTime, default=datetime.datetime.utcnow)
 
-class Root(object):
+
+class Notes_Class(object):
 
     @property
     def db(self):
         return cherrypy.request.db
 
-    # @cherrypy.expose()
-    # @cherrypy.tools.json_in()
-    # @cherrypy.tools.json_out()
-    # def UsernameExists(self):
-    #     import pdb; pdb.set_trace();
-    #     json_obj = cherrypy.request.json
-    #     usernames = ['bruce', 'lee', 'jackie', 'chan']
-    #     return {"exists": json_obj['username'] in usernames}
+    @cherrypy.expose
+    def index(self):
+        all_notes = self.db.query(Notes).order_by(asc(Notes.created_date))
+        tmpl = env.get_template('notes.html')
+        return tmpl.render(notes=all_notes)
 
     @cherrypy.expose
-    def submit(self, note):
-        self.db.add(Notes(note=note))
+    def submit(self,title,note):
+        self.db.add(Notes(title=title,note=note))
         self.db.commit()
-        for msg in self.db.query(Notes).all():
-            print msg.note
-            print "=================="
         cherrypy.response.headers['Content-Type'] = 'application/json'
-        return json.dumps(dict(title="Hello, %s" % note))
+        return json.dumps(dict(title="%s " % title , note="%s " % note))
 
     @cherrypy.expose
-    def index(self, note=None):
-        if note: 
-            self.db.add(Notes(note=note))
-            self.db.commit()
-            raise cherrypy.HTTPRedirect('/')
+    def update_data(self,note_id,title,note):
+        self.db.query(Notes).filter(Notes.id == note_id).update({Notes.title: title ,Notes.note:note});
+        self.db.commit();
+        cherrypy.response.headers['Content-Type'] = 'application/json'
+        return json.dumps(dict(title="%s " % title , note="%s " % note))
 
-        tmpl = env.get_template('index.html')
+    @cherrypy.expose
+    def delete_data(self,note_id):
+        self.db.query(Notes).filter(Notes.id == note_id).delete();
+        self.db.commit();
+        cherrypy.response.headers['Content-Type'] = 'application/json'
+        return json.dumps({'status':200})
+
+class ListNotes_Class(object):
+
+    @property
+    def db(self):
+        return cherrypy.request.db
+
+    @cherrypy.expose
+    def index(self):
+       
+        tmpl = env.get_template('listNotes.html')
         return tmpl.render()
 
-
+   
 
 def run():
     cherrypy.tools.db = SQLAlchemyTool()
 
     global_conf = {
         'global': {
-            'server.socket_host': '0.0.0.0',
+            'server.socket_host': '127.0.0.1',
             'server.socket_port': int(os.environ.get('PORT', 5000)),
         },
         'databases':{
-            'driver': "sqlite"
+            'driver': "postgres",
+            'host': "localhost",
+            'port': 5432,
         }
     }
     cherrypy.config.update(global_conf)
@@ -79,15 +97,15 @@ def run():
         },    
         
     }
-    cherrypy.tree.mount(Root(), '/', config=app_config)
-    dbfile = os.path.join(HERE, 'db3.db')
+    cherrypy.tree.mount(Notes_Class(), '/', config=app_config)
+    cherrypy.tree.mount(ListNotes_Class(), '/listNotes/', config=app_config)
+    # dbfile = os.path.join(HERE, 'database1.db')
 
-    if not os.path.exists(dbfile):
-        open(dbfile, 'w+').close()
+    # if not os.path.exists(dbfile):
+    #     open(dbfile, 'w+').close()
 
     sqlalchemy_plugin = SQLAlchemyPlugin(
-         cherrypy.engine, Base, 'sqlite:///%s' % (dbfile),
-        echo=True
+         cherrypy.engine, Base, 'postgresql+psycopg2://postgres:rootpass@0.0.0.0:5432/db1'
     )
     sqlalchemy_plugin.subscribe()
     sqlalchemy_plugin.create()
@@ -98,3 +116,6 @@ def run():
 
 if __name__ == '__main__':
     run()
+
+
+

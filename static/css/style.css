@@ -2,20 +2,30 @@ html {
   font-size: 24px;
   color: black;
 }
+
+body {
+    font-family: "Lato", sans-serif;
+    background-color: #e8e8e8 !important;
+}
+
+ 
+ /* header css */
 header{
-	border-bottom: solid  5px rgb(255, 180, 0);
+	border-bottom: 5px solid #267ED5;
 }
 #nav{
 	position: fixed;
 	width: 100%;
 	height: 10%;
-	background: rgb(255, 187, 0);
+	background: #4C9EF0;
+}
+#nav img{
+    width: 100px;
+    height: 50px;
+    margin-left: 20px;
 }
 
-body {
-    font-family: "Lato", sans-serif;
-}
-
+ /* side nav css */
 .sidenav {
     height: 100%;
     width: 160px;
@@ -25,23 +35,130 @@ body {
     left: 0;    
     overflow-x: hidden;
     padding-top: 20px;
-    border-right:  solid 2px lightgray;
+    background: #4C9EF0 ;
 }
 
 .sidenav a {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 17px;
     color: black;
     display: block;
 }
 
 .sidenav a:hover {
-    background-color: gray;
+    background: rgb(16, 108, 200);
+    color: white;
 }
 
-.main {
-    margin-left: 160px; /* Same as the width of the sidenav */
-    font-size: 28px; /* Increased text to enable scrolling */
-    padding: 0px 10px;
+
+ /* cards css */
+.section {
+    position: relative;
+    display: inline-block;
+}
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 20%;
+    height: 30%;
+    margin-left : 50px;
+    margin-top : 50px;
+    float: left;
+    padding: 10px;
+    background-color: white;
+
+}
+#menu-toggle{
+    text-decoration: none;
+    float:left;
+    color:#fff;
+    padding-right: 15px;
+}
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.edit_note_icon {
+    padding-top: 7px;   
+    padding-right: 30px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    float:left;
+}
+.delete_note_icon {
+    padding-top: 7px;   
+    padding-right: 7px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+ /* edit modal css */
+input.error , textarea.error{
+    border-color:#F10202;
+    box-shadow: none;
+    
+}
+#modal_title{
+    font-size: 22px;
+}
+
+
+[contenteditable=true]:empty:before{
+  content: attr(placeholder);
+}
+
+#note_title,#list_note_title{
+    font-size: 20px;
+}
+
+div[contenteditable=true] {
+  padding: 5px;
+  outline: 0px solid transparent;
+}
+
+pre {
+  background:#EEE;
+  padding:5px;
+  width: 290px;
+}
+
+.editable_card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    padding: 10px;
+    background-color: white;
+    overflow:hidden;
+    margin:0;
+
+}
+#editable{
+    display: block;
+    width: 80%;
+    height: 40px;
+    position: relative;
+}
+#note_content,#note_title{
+    margin: 10px;
+}
+.takeNoteOneLine{
+    float: left;
+    width: calc(100% - 20px);
+}
+.noteAddlistView{
+    border:1px solid #000;
+    border-left: 0;
+    border-right: 0;
+    padding: 7px 0 7px 20px;
+    position: relative;
+}
+.noteAddlistView:before{
+    content: '\f067';
+    font: normal normal normal 14px/1 FontAwesome;
+        position: absolute;
+    left: 0;
+    top: 14px;
+
 }
