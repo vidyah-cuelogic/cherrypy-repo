@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+	  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+	  
+	  <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	  <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+	  <script type="text/javascript" src="/static/js/notes.js"></script>
+	  <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
+	  <title>cherrypy example</title>
+	  
+	</head>
+<body>
+	<div class="container-fluid" id="main" >
+		<div class="row">
+		 	<header id="nav">
+			 	<a href="test.html">
+				 <img src="/static/images/notes.png" alt="note" style="float:left";>
+				</a>
+			</header>
+		</div>
+		<div class="row"  style="padding-top:10%;">
+			<div class="sidenav">
+
+				  <a href="/">Note</a>
+				  <a href="/listNotes/">List Note</a>
+						
+			</div>
+			<div class="col-md-10 col-md-offset-2" class="main">
+				<div class="row">
+					<div class="col-md-7 col-md-offset-2">
+						<div id="editable" class="editable_card"  >
+						  <div class="takeNoteOneLine">Take a note...</div>
+						  <div id="new_list">
+						  	<a href="#" onclick="notesServices.show_DivEditListNote()" title="New List">
+					          <span class="glyphicon glyphicon-list"></span>
+					        </a>
+					       </div>
+						</div>
+					<!-- 	<div id="editNote" class="editable_card">
+							
+								<h3><div id="note_title" contenteditable="true" placeholder="Title"></div></h3>
+								<div id="note_content" contenteditable="true" placeholder="Take a note..."></div>
+								<button type="button" id="submit" class="btn btn-default pull-right" onclick="notesServices.addNotes()">Done</button>
+						</div> -->
+						<div id="editNote" class="editable_card">
+							
+								<h3><div id="list_note_title" contenteditable="true" placeholder="Title"></div></h3>
+								<div class="noteAddlistView">
+									<div contenteditable="true" placeholder="List item..."></div>	
+								</div>
+				
+						</div>			
+					</div>
+				</div>
+				 
+
+				
+			</div>
+		</div>
+
+	</div>
+</body>
+<script type="text/javascript">
+	// $( document ).ready(function() {
+	//     console.log( "ready!" );
+	//     notesServices.fetchAll_notes();
+	// });
+
+	$("#editNote").hide();
+
+	$('#editable').on('click', function(e) {
+		e.stopPropagation();
+		$("#note_title").html("")
+		$("#note_content").html("")
+        $("#editNote").show();
+        $("#editable").hide();
+	         
+	});
+	// $('#editable').on('click', function(e) {
+	//     e.stopPropagation();
+	//     if ($(this).attr("contentEditable") == "true") {
+	//             $("#edit").show();
+	//             $("#editable").hide();
+	//         } 
+	// });
+
+	$('#editNote').on('click', function(e) {
+	    e.stopPropagation();
+	});
+
+		
+
+	$(document).on('click', function (e) {
+	 	$("#editNote").hide();
+		$("#editable").show();
+	});
+</script>
+</html>
